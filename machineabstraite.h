@@ -13,7 +13,7 @@ typedef struct Bloc {
   int svt;
 }Bloc;
 
-//buffer à utiliser pour manipuler la MC et la MS
+//buffer ï¿½ utiliser pour manipuler la MC et la MS
 Bloc Buffer;
 
 //structure de l'entete du fichier LO_VC
@@ -35,7 +35,7 @@ Entete entete_f;
 typedef struct enregistrement
 {   int cle;
     int car_spe1;
-    int efface;
+    int efface;  // pour indiquer l'effacement logique
     char car_spe2;
 }enreg;
 
