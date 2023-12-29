@@ -310,4 +310,26 @@ void recuperer_efface_Bloc(LO_VC *t, int *i, int *pos, char *ch_recup)
 
 
 }
+void suppressionLogiqueLO_VC(LO_VC *f, int cle)
+{
+    int i,pos;
+    bool trouv;
+    Bloc buffer;
+    char *chaine=malloc(sizeof(char)*3);
+    rechercheLO_VC(f,&cle,&trouv,&i,&pos); // recherche de la cle dans le fichier
+    if(trouv)
+    {
+         lireMS(f ,i,&buffer);   // lecture du bloc dans lequel on a trouvé l'info
+        recuperer_efface_Bloc(f,&i,&pos,&chaine);// recuperation de  l'indice de l'effacement
+        buffer.Tab[pos]='1';          // mise du champs efface a vrai
+        ecrireMS(f,i,&buffer);                  // reecriture du bloc
+        affecter_entete(f,5,entete(f,5)+1); // mise a jour du nombre de caractère supprimes
+        printf("\n suppression logique reussie\n");
+    }
+    else
+    {
+        printf("\n   suppression impossible ! cle inexistante \n");
+    }
+}
+
 

@@ -15,14 +15,25 @@ int main()
     printf("\n********Affichage des blocs********* \n");
     afficherLO_VC(t);
 
-
-
     printf("\n");
+
+
+
 
     char *ma_cle;
     bool cle_trouvee;
     int i,pos;
     ma_cle= (char*)malloc(sizeof(char)*(5));
+
+
+    printf("veullez entrer la cle vous souhaitez supprimer   ");
+    scanf("%s",&ma_cle);
+
+    suppressionLogiqueLO_VC(t,ma_cle);
+
+      printf("\n********Emplacement libre********* \n");
+    printf("\n Le dernier bloc : %d , La derniere position libre : %d \n ",entete(t,2),entete(t,3));
+    /*
     if (ma_cle == NULL) {
         fprintf(stderr, "Allocation de memoire impossible \n");
         return 1;
@@ -35,6 +46,9 @@ int main()
         }
     printf("\n********Emplacement libre********* \n");
     printf("\n Le dernier bloc : %d , La derniere position libre : %d \n ",entete(t,2),entete(t,3));
+    */
+
+
 
  /*
     char *nouv_cle;

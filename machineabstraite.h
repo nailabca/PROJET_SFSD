@@ -14,7 +14,7 @@ typedef struct Bloc {
   int svt;
 }Bloc;
 
-//buffer à utiliser pour manipuler la MC et la MS
+//buffer � utiliser pour manipuler la MC et la MS
 Bloc Buffer;
 
 //structure de l'entete du fichier LO_VC
@@ -52,7 +52,7 @@ int AllocBloc(LO_VC *t);
 
 //fonctions fichier LO_VC
 void creationLO_VC(LO_VC *t,int nb_enrg);
-void suppressionLO_VC(LO_VC *t, int cle);
+void suppressionLogiqueLO_VC(LO_VC *t, int cle);
 void insertionLO_VC(LO_VC *t, char *cle);
 void rechercheLO_VC(LO_VC *t, char *key, bool *trouve,int *i,int *pos);
 void ecrire_char_Bloc(LO_VC *t,char *ch,int *i ,int *pos);
@@ -83,7 +83,7 @@ typedef struct Bloc {
   int svt;
 }Bloc;
 
-//buffer ï¿½ utiliser pour manipuler la MC et la MS
+//buffer � utiliser pour manipuler la MC et la MS
 Bloc Buffer;
 
 //structure de l'entete du fichier LO_VC
