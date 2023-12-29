@@ -41,7 +41,7 @@ LO_VC* ouvrir(char nomfichier[20],char mode)
 void fermer (LO_VC *t)
 {
     fseek(t->f,0,SEEK_SET);//se placer au debut du fichier
-    fwrite(&(t->entete_f),sizeof(Entete),1,t->f); //ecrire l'entete probablement modifié au cours des traitements
+    fwrite(&(t->entete_f),sizeof(Entete),1,t->f); //ecrire l'entete probablement modifiï¿½ au cours des traitements
     fclose(t->f); //fermer le fichier
 }
 
@@ -99,7 +99,7 @@ int AllocBloc(LO_VC *t){
  }
 
 
-//fonction pour ecrire dans le bloc à travers le buffer (éventuellement la clé /car spé1 /effacé /car_spé2 )
+//fonction pour ecrire dans le bloc ï¿½ travers le buffer (ï¿½ventuellement la clï¿½ /car spï¿½1 /effacï¿½ /car_spï¿½2 )
 void ecrire_char_Bloc(LO_VC *t,char *ch,int *i, int *pos){
 
    for (int k = 0; k < strlen(ch) ; k++)
@@ -132,8 +132,8 @@ void creationLO_VC(LO_VC *t,int nb_enrg){
   for(int i =0 ;i<nb_enrg; i++){
     int cle = rand()%10000; // (0-9999)
     snprintf(ch,sizeof(ch),"%d",cle); //conversion d'un entier en chaine
-    ecrire_char_Bloc(t,ch,&B,&pos); //ecrire la clé
-    ecrire_char_Bloc(t,"$0#",&B,&pos); //ecrire (car spé1 /effacé /car spé2)
+    ecrire_char_Bloc(t,ch,&B,&pos); //ecrire la clï¿½
+    ecrire_char_Bloc(t,"$0#",&B,&pos); //ecrire (car spï¿½1 /effacï¿½ /car spï¿½2)
     if( fgets(ch_nom,sizeof(ch_nom),fNom)!= NULL )
     {    int k = 0;
          printf("%s",ch_nom);
@@ -146,7 +146,7 @@ void creationLO_VC(LO_VC *t,int nb_enrg){
     ecrire_char_Bloc(t,ch_nom,&B,&pos);
     printf("Bloc = %d , position = %d\n",B,pos);
   }
-   affecter_entete(t,3,pos); //positionner à la position libre du bloc libre
+   affecter_entete(t,3,pos); //positionner ï¿½ la position libre du bloc libre
    ecrireMS(t,B,&Buffer); //ecrire le dernier bloc
   free(ch);
 }
@@ -168,7 +168,7 @@ void afficherLO_VC(LO_VC *t){
         i = Buffer.svt;
     }
 
-    //cas particulier : (dernier bloc, car il n'est peut être pas totalement rempli)
+    //cas particulier : (dernier bloc, car il n'est peut ï¿½tre pas totalement rempli)
     lireMS(t,i,&Buffer);
     printf("\n");
     printf("Bloc %d = ",i);
@@ -178,7 +178,7 @@ void afficherLO_VC(LO_VC *t){
         }
 }
 
-//fonction pour rechercher une clé
+//fonction pour rechercher une clï¿½
 void rechercheLO_VC(LO_VC *t, char *key, bool *trouve,int *i,int *pos)
 {
      *i= entete(t,1);
