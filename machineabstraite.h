@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #ifndef machineabstraite_h_included
 #define machineabstraite_h_included
 
@@ -14,7 +14,7 @@ typedef struct Bloc {
   int svt;
 }Bloc;
 
-//buffer � utiliser pour manipuler la MC et la MS
+//buffer à utiliser pour manipuler la MC et la MS
 Bloc Buffer;
 
 //structure de l'entete du fichier LO_VC
@@ -67,7 +67,7 @@ void afficherLO_VC(LO_VC *t);
 
 
 
-=======
+
 #ifndef machineabstraite_h_included
 #define machineabstraite_h_included
 
@@ -83,7 +83,7 @@ typedef struct Bloc {
   int svt;
 }Bloc;
 
-//buffer � utiliser pour manipuler la MC et la MS
+//buffer ï¿½ utiliser pour manipuler la MC et la MS
 Bloc Buffer;
 
 //structure de l'entete du fichier LO_VC
@@ -133,4 +133,3 @@ void afficherLO_VC(LO_VC *t);
 
 
 
->>>>>>> 890cedd68643eef98c019bfaa224d42cd5870170
