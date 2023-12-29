@@ -125,16 +125,28 @@ void ecrire_char_Bloc(LO_VC *t,char *ch,int *i, int *pos){
  //creation du fichier LO_VC
 void creationLO_VC(LO_VC *t,int nb_enrg){
     char *ch = malloc(6);
+    char ch_nom[15];
+    FILE *fNom = fopen("Nom.txt","r");
     int pos = 0;
-    int B = entete(t,2); //numero du bloc
+    int B = entete(t,2); //numero du bloc (B = Bloc)
   for(int i =0 ;i<nb_enrg; i++){
-    int cle = rand()%10000;
+    int cle = rand()%10000; // (0-9999)
     snprintf(ch,sizeof(ch),"%d",cle); //conversion d'un entier en chaine
     ecrire_char_Bloc(t,ch,&B,&pos); //ecrire la clé
     ecrire_char_Bloc(t,"$0#",&B,&pos); //ecrire (car spé1 /effacé /car spé2)
-    printf("B = %d , pos = %d\n",B,pos);
+    if( fgets(ch_nom,sizeof(ch_nom),fNom)!= NULL )
+    {    int k = 0;
+         printf("%s",ch_nom);
+        while(ch_nom[k] != '\0')
+        {
+            k++;
+        }
+       ch_nom[k-1] = '/';
+    }
+    ecrire_char_Bloc(t,ch_nom,&B,&pos);
+    printf("Bloc = %d , position = %d\n",B,pos);
   }
-   affecter_entete(t,3,pos+1); //positionner à la position libre du bloc libre
+   affecter_entete(t,3,pos); //positionner à la position libre du bloc libre
    ecrireMS(t,B,&Buffer); //ecrire le dernier bloc
   free(ch);
 }
@@ -148,6 +160,7 @@ void afficherLO_VC(LO_VC *t){
     {
          lireMS(t,i,&Buffer);
          printf("\n");
+         printf("Bloc %d = ",i);
         for(pos=0;pos<10;pos++)
             {
                 printf("%c",Buffer.Tab[pos]);
@@ -158,7 +171,8 @@ void afficherLO_VC(LO_VC *t){
     //cas particulier : (dernier bloc, car il n'est peut être pas totalement rempli)
     lireMS(t,i,&Buffer);
     printf("\n");
-    for(pos=0;pos<(entete(t,3)-1);pos++)
+    printf("Bloc %d = ",i);
+    for(pos=0; pos< entete(t,3);pos++)
         {
             printf("%c",Buffer.Tab[pos]);
         }
@@ -171,27 +185,55 @@ void rechercheLO_VC(LO_VC *t, char *key, bool *trouve,int *i,int *pos)
      *pos = 0;
      *trouve = false;
      lireMS(t,*i,&Buffer);
-
+     char *cle = malloc(5);
+     char *efface = malloc(5);
      while((*trouve==false)   && ((*i != entete(t,2)) || (*i == entete(t,2) && *pos < entete(t,3))) )
-        { char *cle = malloc(5);
+        {
           recuperer_cle_Bloc(t,i,pos,cle);
-          printf("%s ",cle);
-          char *efface = malloc(5);
+          printf(" %s ~",cle);
           recuperer_efface_Bloc(t,i,pos,efface);
           int cmp_cle = strcmp(key,cle);
           int cmp_efface = strcmp(efface,"$0");
          if ( (cmp_cle == 0 )&& (cmp_efface == 0))
            {*trouve = true;}
+          //on avance pour se positionner sur le '/' pour recuperer les cles suivantes
+
+            while((Buffer.Tab[*pos] != '/')&&((*i!=entete(t,2))||(*pos != entete(t,3))))
+             {      if(*i!=entete(t,2))
+                       {
+                          if(*pos<10)
+                            { //pas de chevauchement
+                                *pos = *pos +1;
+                            }
+                              else{ //avec chevauchement
+                                    *i = Buffer.svt;
+                                    lireMS(t,*i,&Buffer);
+                                        if(Buffer.Tab[0] != '/')
+                                          {
+                                            *pos = 1;
+                                          }
+                                       else{*pos=0;}
+                                  }
+                         }
+                    else //pour le dernier bloc
+                     {
+                         if(*pos < entete(t,3))
+                            { //pas de chevauchement
+                                 *pos = *pos +1;
+                            }
+                     }
+              }
+        *pos = *pos +1;
         }
-        if(*trouve==true){printf("\nCLE TROUVEE ! ");}
-        else{printf("\nCLE PAS TROUVEE ! ");}
+        if(*trouve==true){printf("\n------CLE TROUVEE !------");}
+        else{printf("\n------CLE INTROUVABLE !------");}
 
 }
 
 
 void recuperer_cle_Bloc(LO_VC *t, int *i, int *pos, char *ch_recup)
 {   int k=0;
-     if(Buffer.Tab[*pos] == '#')
+     if(Buffer.Tab[*pos] == '/')
         *pos=*pos+1;
     while((Buffer.Tab[*pos] != '$')&&((*i!=entete(t,2))||(*pos != entete(t,3))))
       {  if(*i!=entete(t,2))
@@ -268,5 +310,4 @@ void recuperer_efface_Bloc(LO_VC *t, int *i, int *pos, char *ch_recup)
 
 
 }
-
 

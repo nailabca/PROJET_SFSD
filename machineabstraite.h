@@ -37,6 +37,7 @@ typedef struct enregistrement
     int car_spe1;
     int efface;
     char car_spe2;
+    char nom;
 }enreg;
 
 //machine abstraite LO_VC
@@ -51,12 +52,14 @@ int AllocBloc(LO_VC *t);
 //fonctions fichier LO_VC
 void creationLO_VC(LO_VC *t,int nb_enrg);
 void suppressionLO_VC(LO_VC *t, int cle);
-void insertionLO_VC(LO_VC *t, int cle);
+void insertionLO_VC(LO_VC *t, char *cle);
 void rechercheLO_VC(LO_VC *t, char *key, bool *trouve,int *i,int *pos);
 void ecrire_char_Bloc(LO_VC *t,char *ch,int *i ,int *pos);
 void recuperer_cle_Bloc(LO_VC *t, int *i, int *pos, char *ch_recup);
 void recuperer_efface_Bloc(LO_VC *t, int *i, int *pos, char *ch_recup);
 void afficherLO_VC(LO_VC *t);
+
+
 
 
 #endif // machineabstraite_h_included
