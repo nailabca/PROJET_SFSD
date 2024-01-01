@@ -52,7 +52,7 @@ int AllocBloc(LO_VC *t);
 
 //fonctions fichier LO_VC
 void creationLO_VC(LO_VC *t,int nb_enrg);
-void suppressionLogiqueLO_VC(LO_VC *t, int cle);
+void suppressionLO_VC(LO_VC *t, char *cle);
 void insertionLO_VC(LO_VC *t, char *cle);
 void rechercheLO_VC(LO_VC *t, char *key, bool *trouve,int *i,int *pos);
 void ecrire_char_Bloc(LO_VC *t,char *ch,int *i ,int *pos);
