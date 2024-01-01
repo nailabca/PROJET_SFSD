@@ -95,6 +95,10 @@ void affecter_entete(LO_VC *t,int i,int n)
 int AllocBloc(LO_VC *t){
  //on ne peut pas utiliser malloc lors de la manipulation de la MS
  int B = entete(t,2)+1; //+1 car on rajoute un nouveau bloc
+
+  Bloc nouveauBloc;
+    nouveauBloc.svt = -1;
+
  return B;
  }
 
@@ -314,21 +318,50 @@ void suppressionLO_VC(LO_VC *f, char *cle)
     bool trouv=false;
     Bloc buffer;
     rechercheLO_VC(f,cle,&trouv,&i,&pos); // recherche de la cle dans le fichier
-    if(trouv)
-    {
-         lireMS(f ,i,&buffer);   // lecture du bloc dans lequel on a trouvé l'info
-         while(buffer.Tab[pos]!='#'){pos--;} //positionner pos sur '#' juste apres l'indice d'effacement
-         buffer.Tab[pos-1]='1';
+    printf("\n");
 
-        ecrireMS(f,i,&buffer);                  // reecriture du bloc
-        affecter_entete(f,5,entete(f,5)+1); // mise a jour du nombre de caractère supprimes
-        printf("\n suppression logique reussie\n");
+
+  if (trouv)
+    {
+
+        int blockCurrent = i;
+
+
+
+
+
+                while(blockCurrent>=0){
+
+                lireMS(f, blockCurrent, &buffer);
+
+            // chercher '#' dans le block current pour modifier l'indice d'effacement se trouvant juste avant ce dernier
+            while(pos>0&&buffer.Tab[pos] != '#'){pos--;}
+
+                if (pos>0)
+                {
+                    buffer.Tab[pos - 1] = '1'; // mise a 1 l'indice d'effacement
+                    ecrireMS(f, blockCurrent, &buffer); // Reecriture  du bloc
+                    affecter_entete(f, 5, entete(f, 5) + 1); // Mise a jour du nombre de caractère supprimes
+                    printf("\n Suppression logique reussie\n");
+                    break;
+                }
+                else
+                {
+                    pos=10;
+                    blockCurrent--;
+                }
+
+                }
+
     }
     else
     {
-        printf("\n   suppression impossible ! cle inexistante \n");
+        printf("\n Suppression impossible ! Cle inexistante\n");
     }
 }
+
+
+
 
 
 
