@@ -96,8 +96,7 @@ int AllocBloc(LO_VC *t){
  //on ne peut pas utiliser malloc lors de la manipulation de la MS
  int B = entete(t,2)+1; //+1 car on rajoute un nouveau bloc
 
-  Bloc nouveauBloc;
-    nouveauBloc.svt = -1;
+
 
  return B;
  }
