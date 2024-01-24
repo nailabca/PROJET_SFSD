@@ -7,35 +7,23 @@
 
 int main()
 {
-
+   //Ouverture du fichier LO_VC :
     LO_VC *t = ouvrir("test_sfsd",'N');
 
+   //Cr�ation du fichier LO_VC :
     creationLO_VC(t,10);
 
+   //Affichage des blocs du fichier LO_VC :
     printf("\n********Affichage des blocs********* \n");
     afficherLO_VC(t);
-
     printf("\n");
 
-
-
-
+   //Recherche d'une cl� :
     char *ma_cle;
     bool cle_trouvee;
     int i,pos;
     ma_cle= (char*)malloc(sizeof(char)*(5));
-
-
-  printf("veullez entrer la cle vous souhaitez supprimer   ");
-    scanf("%s",ma_cle);
-    suppressionLO_VC(t,ma_cle);
-
-        printf("\n");
-    printf("\n********Affichage des blocs********* \n");
-    afficherLO_VC(t);
-
-
-   /* if (ma_cle == NULL) {
+    if (ma_cle == NULL) {
         fprintf(stderr, "Allocation de memoire impossible \n");
         return 1;
     }
@@ -45,13 +33,11 @@ int main()
            printf("* La cle choisie est : %s\n",ma_cle);
            rechercheLO_VC(t,ma_cle,&cle_trouvee,&i,&pos);
         }
-    printf("\n********Emplacement libre********* \n");
+    printf("\n\n********Emplacement libre********* \n");
     printf("\n Le dernier bloc : %d , La derniere position libre : %d \n ",entete(t,2),entete(t,3));
 
-*/
 
-
- /*
+   //Insertion d'une cl� :
     char *nouv_cle;
     nouv_cle = (char*)malloc(sizeof(char)*(5));
     if (nouv_cle == NULL) {
@@ -67,8 +53,25 @@ int main()
            printf("\n");
         }
 
- */
+   //Suppression d'une cl� :
+    char *cle_supprime;
+    cle_supprime = (char*)malloc(sizeof(char)*(5));
+    if (nouv_cle == NULL) {
+        fprintf(stderr, "Allocation de memoire impossible \n");
+        return 1;
+    }
+    else{  printf("\n* Veuillez entrer la cle entre (0-9999) que vous souhaitez supprimer : ");
+            scanf("%s",cle_supprime);
+           printf("* La cle choisie est : %s\n",cle_supprime);
+            suppressionLO_VC(t,cle_supprime);
+           printf("\n");
+            afficherLO_VC(t);
+           printf("\n");
+        }
 
+
+ //Fermeture du fichier LO_VC :
   fermer(t);
+
     return 0;
 }

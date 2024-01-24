@@ -95,9 +95,6 @@ void affecter_entete(LO_VC *t,int i,int n)
 int AllocBloc(LO_VC *t){
  //on ne peut pas utiliser malloc lors de la manipulation de la MS
  int B = entete(t,2)+1; //+1 car on rajoute un nouveau bloc
-
-
-
  return B;
  }
 
@@ -110,6 +107,9 @@ void ecrire_char_Bloc(LO_VC *t,char *ch,int *i, int *pos){
         if(*pos<10)
         {    //pas de chevauchement
            Buffer.Tab[*pos] = ch[k];
+                   //augmenter le nombre d'enregistrement dans le bloc
+                   if(Buffer.Tab[*pos] == '/')
+                      { Buffer.head.nb_eng = Buffer.head.nb_eng +1;}
            *pos = *pos + 1;
         }
         else{ //avec chevauchement
@@ -118,7 +118,11 @@ void ecrire_char_Bloc(LO_VC *t,char *ch,int *i, int *pos){
            Buffer.svt = nouv_bloc;
            ecrireMS(t,*i,&Buffer); //ecrire le buffer rempli dans la MS
            *i= nouv_bloc;
+           Buffer.head.nb_eng=0;
            Buffer.Tab[0] = ch[k]; // transmission de la chaine au buffer et pos=0
+                  //augmenter le nombre d'enregistrement dans le bloc
+                   if(Buffer.Tab[0] == '/')
+                    { Buffer.head.nb_eng = Buffer.head.nb_eng +1;}
            *pos = 1; //pour incrementer la pos dans le nouveau bloc
         }
        affecter_entete(t,4,entete(t,4)+1);
@@ -132,6 +136,7 @@ void creationLO_VC(LO_VC *t,int nb_enrg){
     FILE *fNom = fopen("Nom.txt","r");
     int pos = 0;
     int B = entete(t,2); //numero du bloc (B = Bloc)
+    Buffer.head.nb_eng=0;
   for(int i =0 ;i<nb_enrg; i++){
     int cle = rand()%10000; // (0-9999)
     snprintf(ch,sizeof(ch),"%d",cle); //conversion d'un entier en chaine
@@ -310,57 +315,88 @@ void recuperer_efface_Bloc(LO_VC *t, int *i, int *pos, char *ch_recup)
          }
      }
      ch_recup[k]='\0';
+
+
 }
-void suppressionLO_VC(LO_VC *f, char *cle)
+
+
+//fonction d'insertion (vers la fin)
+void insertionLO_VC(LO_VC *t, char *cle)
 {
-    int i,pos;
-    bool trouv=false;
-    Bloc buffer;
-    rechercheLO_VC(f,cle,&trouv,&i,&pos); // recherche de la cle dans le fichier
-    printf("\n");
+  bool trouve=false;
+  int i = entete(t,1);
+  int pos = 0;
+  char ch_nom[15];
+
+  rechercheLO_VC(t,cle,&trouve,&i,&pos);
+  if(trouve==true)
+    { printf("\n----CETTE CLE EXISTE DEJA! (INSERTION REFUSEE)----");}
+
+  else
+     {    printf("\n----CETTE CLE N'EXISTE PAS! (INSERTION ACCEPTEE)----");
+          i= entete(t,2);
+          pos = entete(t,3);
+          lireMS(t,i,&Buffer);
+          ecrire_char_Bloc(t,cle,&i,&pos); //ecrire la cl�
+          ecrire_char_Bloc(t,"$0#",&i,&pos); //ecrire (car sp�1 /effac� /car sp�2)
+          printf("\n*Veuillez donnez un nom : ");
+          scanf("%s",ch_nom);
+          strcat(ch_nom,"/");
+          ecrire_char_Bloc(t,ch_nom,&i,&pos);
+          affecter_entete(t,3,pos); //positionner � la position libre du bloc libre
+          affecter_entete(t,4,(strlen(cle)+3+strlen(ch_nom)));
+          //augmenter le nombre d'enregistrement
+            printf("\nle nombre d'eng au bloc num %d apres insertion = %d\n",i,Buffer.head.nb_eng);
+          ecrireMS(t,i,&Buffer); //ecrire le dernier bloc
+     }
 
 
-  if (trouv)
-    {
-
-        int blockCurrent = i;
-
-
-
-
-
-                while(blockCurrent>=0){
-
-                lireMS(f, blockCurrent, &buffer);
-
-            // chercher '#' dans le block current pour modifier l'indice d'effacement se trouvant juste avant ce dernier
-            while(pos>0&&buffer.Tab[pos] != '#'){pos--;}
-
-                if (pos>0)
-                {
-                    buffer.Tab[pos - 1] = '1'; // mise a 1 l'indice d'effacement
-                    ecrireMS(f, blockCurrent, &buffer); // Reecriture  du bloc
-                    affecter_entete(f, 5, entete(f, 5) + 1); // Mise a jour du nombre de caractère supprimes
-                    printf("\n Suppression logique reussie\n");
-                    break;
-                }
-                else
-                {
-                    pos=10;
-                    blockCurrent--;
-                }
-
-                }
-
-    }
-    else
-    {
-        printf("\n Suppression impossible ! Cle inexistante\n");
-    }
 }
 
 
+//fonction de suppression logique (le principe est de mettre de le '0' de l'effacement logique � '1')
+void suppressionLO_VC(LO_VC *t, char *cle)
+{
+  bool trouve=false;
+  int i = entete(t,1);
+  int pos = 0;
+  int car_supp=0;
+  rechercheLO_VC(t,cle,&trouve,&i,&pos);
+  if(trouve==false)
+    { printf("\n----CETTE CLE N'EXISTE PAS! (SUPPRESSION INUTILE)----");}
 
-
-
-
+  else
+     {  printf("\n----CETTE CLE EXISTE! (SUPPRESSION ACCEPTEE)----");
+        //
+         while(Buffer.Tab[pos] != '#')
+             {
+                 if(pos != 0)
+                 {pos = pos-1;
+                  car_supp++;
+                  affecter_entete(t,5,car_supp);
+                  }
+                 else
+                 {
+                   i = i-1;
+                   lireMS(t,i,&Buffer);
+                   pos = 9;
+                 }
+             }
+       // Dans le cas o� le # est � la position 0
+            if((Buffer.Tab[pos] = '#') && (pos==0))
+            { i = i-1;
+              lireMS(t,i,&Buffer);
+              Buffer.Tab[9] = '1';
+              affecter_entete(t,5,(3+strlen(cle)));
+            }
+           else
+           { Buffer.Tab[pos-1] = '1';
+             affecter_entete(t,5,(3+strlen(cle)));
+           }
+         //diminuer le nombre d'enregistrement
+          if(Buffer.head.nb_eng==0)
+          {Buffer.head.nb_eng=1;}
+         printf("\nle nombre d'eng au bloc num %d apres suppression = %d\n",i,Buffer.head.nb_eng-1);
+         ecrireMS(t,i,&Buffer);
+     }
+}
