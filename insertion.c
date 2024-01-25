@@ -325,10 +325,21 @@ void insertionLO_VC(LO_VC *t, char *cle){
         pos=entete(t,3);
         lireMS(t,i,&Buffer);
         ecrire_char_Bloc(t,cle,&i,&pos); // ecrire la cle
-        ecrire_char_Bloc(t,"§0#",&i,&pos); // ecrire 
+        ecrire_char_Bloc(t,"§0#",&i,&pos); 
          printf("\n*Veuillez donnez un nom : ");
         scanf("%s",ch_nom);
         strcat(ch_nom,"/");
+          ecrire_char_Bloc(t,ch_nom,&i,&pos);
+          affecter_entete(t,3,pos); //positionner   la position libre du bloc libre
+          affecter_entete(t,4,(strlen(cle)+3+strlen(ch_nom)));
+          //augmenter le nombre d'enregistrement
+            printf("\nle nombre d'eng au bloc num %d apres insertion = %d\n",i,Buffer.head.nb_eng);
+          ecrireMS(t,i,&Buffer); //ecrire le dernier bloc
+     }
+
+
+}
+
       
      }
 
