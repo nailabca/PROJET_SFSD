@@ -114,3 +114,30 @@
 1701702508 c:\msys64\mingw64\include\pthread_time.h
 	<sys/timeb.h>
 
+1706138694 source:c:\users\hp\onedrive\desktop\projet_sfsd-go\machineabstraite.c
+	"machineabstraite.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	<time.h>
+
+1706138694 c:\users\hp\onedrive\desktop\projet_sfsd-go\machineabstraite.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	<time.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	<time.h>
+
+1706138694 source:c:\users\hp\onedrive\desktop\projet_sfsd-go\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"machineabstraite.h"
+	<string.h>
+
