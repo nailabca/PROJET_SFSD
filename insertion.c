@@ -326,6 +326,14 @@ void insertionLO_VC(LO_VC *t, char *cle){
         lireMS(t,i,&Buffer);
         ecrire_char_Bloc(t,cle,&i,&pos); // ecrire la cle
         ecrire_char_Bloc(t,"§0#",&i,&pos); // ecrire 
+         printf("\n*Veuillez donnez un nom : ");
+        scanf("%s",ch_nom);
+        strcat(ch_nom,"/");
+      
+     }
+
+
+}
         
         
         
